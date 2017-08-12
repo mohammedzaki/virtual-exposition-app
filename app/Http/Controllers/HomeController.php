@@ -1,27 +1,24 @@
 <?php
 
-/**
- * Provides a controller for home page views/models.
- *
- * @author     hamedmehryar
- */
-
 namespace App\Http\Controllers;
 
+/**
+ * Description of HomeController
+ *
+ * @author mohammedzaki
+ * @Middleware({"web","auth"})
+ */
 class HomeController extends Controller {
 
     /**
-     * HomeController constructor.
-     */
-    public function __construct() {
-        
-    }
-
-    /**
-     * @return $this
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     * @Get("/home", as="home")
+     * @Get("/")
      */
     public function index() {
-        return view('welcome');
+        return view('home');
     }
 
 }

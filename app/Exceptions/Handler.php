@@ -5,9 +5,10 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response as ResponseClass;
 
-class Handler extends ExceptionHandler
-{
+class Handler extends ExceptionHandler {
+
     /**
      * A list of the exception types that should not be reported.
      *
@@ -30,8 +31,7 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return void
      */
-    public function report(Exception $exception)
-    {
+    public function report(Exception $exception) {
         parent::report($exception);
     }
 
@@ -42,8 +42,14 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
-    {
+    public function render($request, Exception $exception) {
+        if ($exception instanceof BaseException) {
+            return $exception->responseJson();
+        }
+        // If the request wants JSON (AJAX doesn't always want JSON)
+        if ($request->wantsJson()) {
+            return $this->exceptionToJson($exception);
+        }
         return parent::render($request, $exception);
     }
 
@@ -54,12 +60,29 @@ class Handler extends ExceptionHandler
      * @param  \Illuminate\Auth\AuthenticationException  $exception
      * @return \Illuminate\Http\Response
      */
-    protected function unauthenticated($request, AuthenticationException $exception)
-    {
+    protected function unauthenticated($request, AuthenticationException $exception) {
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
         return redirect()->guest(route('login'));
     }
+
+    function exceptionToJson($exception) {
+        // Default response of 500
+        $status = ResponseClass::HTTP_INTERNAL_SERVER_ERROR;
+        
+        // If this exception is an instance of HttpException
+        /* if ($this->isHttpException($exception)) {
+            // Grab the HTTP status code from the Exception
+            $status = $exception->getStatusCode();
+        } else */
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            $status = ResponseClass::HTTP_NOT_FOUND;
+        }
+
+        // Return a JSON response with the response array and status code
+        return response()->jsonException($exception, $status);
+    }
+
 }
