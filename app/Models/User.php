@@ -15,7 +15,7 @@ class User extends Authenticatable {
      * Generated
      */
     protected $table = 'users';
-    protected $fillable = ['id', 'name', 'email', 'username', 'password', 'remember_token'];
+    protected $fillable = ['id', 'name', 'email', 'password', 'remember_token'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -25,13 +25,21 @@ class User extends Authenticatable {
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
+
     public function roles() {
         return $this->belongsToMany(\App\Models\Role::class, 'role_user', 'user_id', 'role_id');
     }
 
+    public function companies() {
+        return $this->hasMany(\App\Models\Company::class, 'userId', 'id');
+    }
+
     public function roleUsers() {
         return $this->hasMany(\App\Models\RoleUser::class, 'user_id', 'id');
+    }
+
+    public function userStandReservations() {
+        return $this->hasMany(\App\Models\UserStandReservation::class, 'userId', 'id');
     }
 
 }
