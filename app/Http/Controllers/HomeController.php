@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 /**
- * Description of HomeController
- *
- * @author mohammedzaki
- * @Middleware({"web","auth"})
+ * 
+ * @Middleware({"web", "auth"}, except={"welcome"})
  */
 class HomeController extends Controller {
 
@@ -15,10 +15,30 @@ class HomeController extends Controller {
      *
      * @return \Illuminate\Http\Response
      * @Get("/home", as="home")
-     * @Get("/")
      */
     public function index() {
         return view('home');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     * @Get("/", as="welcome")
+     * @Middleware({"web", "guest"})
+     */
+    public function welcome() {
+        return view('welcome');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     * @Get("/oauth-clients", as="oauthClients")
+     */
+    public function oauthClients() {
+        return view('oauth-clients');
     }
 
 }
