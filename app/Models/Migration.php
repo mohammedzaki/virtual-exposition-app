@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Migration extends BaseModel {
+class Migration extends Model {
 
     /**
      * Generated

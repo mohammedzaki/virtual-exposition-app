@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class PasswordReset extends BaseModel {
+class PasswordReset extends Model {
 
     /**
      * Generated

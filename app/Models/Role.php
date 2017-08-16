@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends BaseModel {
+class Role extends Model {
 
     /**
      * Generated

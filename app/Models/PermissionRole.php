@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class PermissionRole extends BaseModel {
+class PermissionRole extends Model {
 
     /**
      * Generated

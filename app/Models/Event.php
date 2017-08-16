@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Event extends Model {
 
@@ -16,5 +17,10 @@ class Event extends Model {
         return $this->hasMany(\App\Models\EventStand::class, 'eventId', 'id');
     }
 
+    public static function getAllOpened() {
+        return static::where([
+            ['startAt', '>', Carbon::now()]
+        ])->get();
+    }
 
 }
