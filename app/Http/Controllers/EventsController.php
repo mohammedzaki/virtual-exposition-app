@@ -7,7 +7,7 @@ use Illuminate\Http\Response as ResponseClass;
 use App\Models\Event;
 
 /**
- * @Controller(prefix="/api/v1/event")
+ * @Controller(prefix="/api/v1/events")
  * 
  * @Middleware({"cros", "bindings"})
  */
@@ -17,7 +17,7 @@ class EventsController extends Controller {
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     * @Get("get-events", as="getAllOpenedEvents")
+     * @Get("/", as="getAllOpenedEvents")
      */
     public function getAllOpenedEvents(Request $request) {
         $events = Event::getAllOpened();
@@ -28,7 +28,7 @@ class EventsController extends Controller {
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     * @Get("get-event-stands\{event}", as="getAllOpenedEvents")
+     * @Get("{event}/stands", as="getEventStands")
      */
     public function getEventStands(Event $event) {
         $eventStands = $event->eventStands;

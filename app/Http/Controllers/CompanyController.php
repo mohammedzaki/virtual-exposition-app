@@ -19,7 +19,13 @@ class CompanyController extends Controller {
 
     protected function validator(array $data, $id = null, $required = 'required') {
         $validator = Validator::make($data, [
-            
+                    'name' => 'required|string',
+                    'phone' => 'required|integer',
+                    "logoImg" => "required|mimes:jpeg,jpg,bmp,png,pdf",
+                    'marketingDocs' => 'required|string',
+                    'adminName' => "required|string",
+                    'adminEmail' => "required|email",
+                    'userId' => "{$required}|exists:users,id",
         ]);
 
         $validator->setAttributeNames([
