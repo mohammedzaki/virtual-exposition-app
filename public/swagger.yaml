@@ -1,51 +1,41 @@
 swagger: '2.0'
 info:
-  description: iHRegistry APIs
+  description: Virtual-Exposition-App APIs
   version: 1.0.0
-  title: iHRegistry
+  title: Virtual-Exposition-App APIs
   contact:
-    email: mohammed.zaki@eye-ltd.com
-# host: api.ihregistery.eye-ltd.com
-host: ihreg.localhost
+    email: mohammed.elsayed.zaki@eye-ltd.com
+host: virtual-exposition-app.localhost
 basePath: /api/v1
 tags:
-  - name: Patient
+  - name: Login
+    description: /api/v1/apiLogin
+  - name: Events
     description: Operation about patients
-  - name: History
-    description: Operation about patient History
-  - name: Imaging
-    description: Operation about patient Imaging
-  - name: LabAssessments
-    description: Operation about patient LabAssessments
-  - name: Transfusion
-    description: Operation about patient Transfusion
-  - name: Treatment
-    description: Operation about patient Treatment
-  - name: Visit
-    description: Operation about patient Visit
+  - name: Company
+    description: Operation about user Company
+  - name: EventStand
 schemes:
   - http
 paths:
-  /patient:
+  /apiLogin:
     post:
       tags:
-        - Patient
-      summary: Create new patient
-      description: This can only be done by the logged in user.
-      operationId: createPatient
-      consumes:
+        - Login
+      summary: login to system
+      description: login
+      operationId: apiLogin
+      consumes: 
         - application/json
-      produces:
+      produces: 
         - application/json
-      parameters:
+      parameters: 
         - in: body
-          name: patient
-          description: Created patient object
+          name: userLoginData
+          description: user Login Data
           required: true
           schema:
-            $ref: '#/definitions/Patient'
-      security:
-        - iHRegistry_auth: []
+            $ref: '#/definitions/LoginData'
       responses:
         '201':
           description: successful operation patient created
@@ -67,24 +57,18 @@ paths:
           description: not implented
           schema:
             $ref: '#/definitions/ExceptionResponse'
+  /events:
     get:
       tags:
-        - Patient
-      summary: Get all patients
+        - Events
+      summary: Get all events
       description: This can only be done by the logged in user.
-      operationId: getAllPatient
+      operationId: getAllOpenedEvents
       consumes:
         - application/json
       produces:
         - application/json
-      parameters:
-        - in: query
-          name: userId
-          description: current user email
-          required: true
-          type: string
-      security:
-        - iHRegistry_auth: []
+      parameters: []
       responses:
         '201':
           description: successful operation patient created
@@ -106,55 +90,10 @@ paths:
           description: not implented
           schema:
             $ref: '#/definitions/ExceptionResponse'
-  /patient/{patientId}:
-    put:
-      tags:
-        - Patient
-      summary: update patient
-      description: This can only be done by the logged in user.
-      operationId: updatePatient
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: patient
-          description: patient data object
-          required: true
-          schema:
-            $ref: '#/definitions/Patient'
-        - in: path
-          name: patientId
-          type: integer
-          description: patient resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '202':
-          description: successful operation patient updated
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
+  /events/{eventId}/stands:
     get:
       tags:
-        - Patient
+        - Events
       summary: get patient data
       description: This can only be done by the logged in user.
       operationId: getPatient
@@ -164,12 +103,10 @@ paths:
         - application/json
       parameters:
         - in: path
-          name: patientId
+          name: eventId
           type: integer
-          description: patient resource id
+          description: event resource id
           required: true
-      security:
-        - iHRegistry_auth: []
       responses:
         '200':
           description: ok
@@ -187,64 +124,29 @@ paths:
           description: not implented
           schema:
             $ref: '#/definitions/ExceptionResponse'
-    delete:
-      tags:
-        - Patient
-      summary: get patient data
-      description: This can only be done by the logged in user.
-      operationId: deletePatient
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: patientId
-          type: integer
-          description: patient resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: patient deleted successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /history:
+  /company:
     post:
       tags:
-        - History
-      summary: Create new patient
+        - Company
+      summary: Create new company
       description: This can only be done by the logged in user.
-      operationId: createPatientHistory
+      operationId: createCompany
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: body
-          name: history
+          name: company
           description: Created patient object
           required: true
           schema:
-            $ref: '#/definitions/History'
+            $ref: '#/definitions/Company'
       security:
-        - iHRegistry_auth: []
+        - VirtualExposition_auth: []
       responses:
         '201':
-          description: successful operation patient history created
+          description: successful operation company created
           schema:
             $ref: '#/definitions/SuccessResponse'
         '401':
@@ -265,10 +167,10 @@ paths:
             $ref: '#/definitions/ExceptionResponse'
     get:
       tags:
-        - History
-      summary: get patient history data
+        - Company
+      summary: get company data
       description: This can only be done by the logged in user.
-      operationId: getPatientHistory
+      operationId: getCompany
       consumes:
         - application/json
       produces:
@@ -280,7 +182,7 @@ paths:
           description: patient id
           required: true
       security:
-        - iHRegistry_auth: []
+        - VirtualExposition_auth: []
       responses:
         '200':
           description: ok
@@ -298,31 +200,31 @@ paths:
           description: not implented
           schema:
             $ref: '#/definitions/ExceptionResponse'
-  /history/{historyId}:
+  /company/{companyId}:
     put:
       tags:
-        - History
-      summary: update patient history
+        - Company
+      summary: update company
       description: This can only be done by the logged in user.
-      operationId: updatePatientHistory
+      operationId: updateCompany
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: body
-          name: historyData
-          description: patient history data object
+          name: companyData
+          description: company data object
           required: true
           schema:
-            $ref: '#/definitions/History'
+            $ref: '#/definitions/Company'
         - in: path
-          name: historyId
+          name: companyId
           type: integer
-          description: patient history resource id
+          description: company resource id
           required: true
       security:
-        - iHRegistry_auth: []
+        - VirtualExposition_auth: []
       responses:
         '202':
           description: successful operation patient updated
@@ -346,25 +248,25 @@ paths:
             $ref: '#/definitions/ExceptionResponse'
     delete:
       tags:
-        - History
-      summary: delete patient history data
+        - Company
+      summary: delete company data
       description: This can only be done by the logged in user.
-      operationId: deletePatientHistory
+      operationId: deleteCompany
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: path
-          name: historyId
+          name: companyId
           type: integer
-          description: patient history resource id
+          description: company resource id
           required: true
       security:
-        - iHRegistry_auth: []
+        - VirtualExposition_auth: []
       responses:
         '200':
-          description: patient history deleted successfully
+          description: company deleted successfully
           schema:
             $ref: '#/definitions/SuccessResponse'
         '401':
@@ -379,107 +281,31 @@ paths:
           description: not implented
           schema:
             $ref: '#/definitions/ExceptionResponse'
-  /visit:
-    post:
-      tags:
-        - Visit
-      summary: Create new patient
-      description: This can only be done by the logged in user.
-      operationId: createPatientVisit
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: visit
-          description: Created patient object
-          required: true
-          schema:
-            $ref: '#/definitions/Visit'
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '201':
-          description: successful operation patient visit created
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    get:
-      tags:
-        - Visit
-      summary: get patient visit data
-      description: This can only be done by the logged in user.
-      operationId: getPatientVisit
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: patientId
-          type: integer
-          description: patient id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: ok
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /visit/{visitId}:
+  /event-stand/{eventStandId}/reserve:
     put:
       tags:
-        - Visit
-      summary: update patient visit
+        - EventStand
+      summary: update company
       description: This can only be done by the logged in user.
-      operationId: updatePatientVisit
+      operationId: reserveEventStand
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: body
-          name: visitData
-          description: patient visit data object
+          name: companyData
+          description: company data object
           required: true
           schema:
-            $ref: '#/definitions/Treatment'
+            $ref: '#/definitions/Company'
         - in: path
-          name: visitId
+          name: eventStandId
           type: integer
-          description: patient visit resource id
+          description: company resource id
           required: true
       security:
-        - iHRegistry_auth: []
+        - VirtualExposition_auth: []
       responses:
         '202':
           description: successful operation patient updated
@@ -491,852 +317,6 @@ paths:
             $ref: '#/definitions/ExceptionResponse'
         '422':
           description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    delete:
-      tags:
-        - Visit
-      summary: delete patient visit data
-      description: This can only be done by the logged in user.
-      operationId: deletePatientVisit
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: visitId
-          type: integer
-          description: patient visit resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: patient visit deleted successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /treatment:
-    post:
-      tags:
-        - Treatment
-      summary: Create new patient
-      description: This can only be done by the logged in user.
-      operationId: createPatientTreatment
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: treatment
-          description: Created patient object
-          required: true
-          schema:
-            $ref: '#/definitions/Treatment'
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '201':
-          description: successful operation patient treatment created
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    get:
-      tags:
-        - Treatment
-      summary: get patient treatment data
-      description: This can only be done by the logged in user.
-      operationId: getPatientTreatment
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: patientId
-          type: integer
-          description: patient id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: ok
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /treatment/{treatmentId}:
-    put:
-      tags:
-        - Treatment
-      summary: update patient treatment
-      description: This can only be done by the logged in user.
-      operationId: updatePatientTreatment
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: treatmentData
-          description: patient treatment data object
-          required: true
-          schema:
-            $ref: '#/definitions/Treatment'
-        - in: path
-          name: treatmentId
-          type: integer
-          description: patient treatment resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '202':
-          description: successful operation patient updated
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    delete:
-      tags:
-        - Treatment
-      summary: delete patient treatment data
-      description: This can only be done by the logged in user.
-      operationId: deletePatientTreatment
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: treatmentId
-          type: integer
-          description: patient treatment resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: patient treatment deleted successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /transfusion:
-    post:
-      tags:
-        - Transfusion
-      summary: Create new patient
-      description: This can only be done by the logged in user.
-      operationId: createPatientTransfusion
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: transfusion
-          description: Created patient object
-          required: true
-          schema:
-            $ref: '#/definitions/Transfusion'
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '201':
-          description: successful operation patient transfusion created
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    get:
-      tags:
-        - Transfusion
-      summary: get patient transfusion data
-      description: This can only be done by the logged in user.
-      operationId: getPatientTransfusion
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: patientId
-          type: integer
-          description: patient id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: ok
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /transfusion/{transfusionId}:
-    put:
-      tags:
-        - Transfusion
-      summary: update patient transfusion
-      description: This can only be done by the logged in user.
-      operationId: updatePatientTransfusion
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: transfusionData
-          description: patient transfusion data object
-          required: true
-          schema:
-            $ref: '#/definitions/Transfusion'
-        - in: path
-          name: transfusionId
-          type: integer
-          description: patient transfusion resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '202':
-          description: successful operation patient updated
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    delete:
-      tags:
-        - Transfusion
-      summary: delete patient transfusion data
-      description: This can only be done by the logged in user.
-      operationId: deletePatientTransfusion
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: transfusionId
-          type: integer
-          description: patient transfusion resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: patient transfusion deleted successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /labAssessment:
-    post:
-      tags:
-        - LabAssessment
-      summary: Create new patient
-      description: This can only be done by the logged in user.
-      operationId: createPatientLabAssessment
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: labAssessment
-          description: Created patient object
-          required: true
-          schema:
-            $ref: '#/definitions/LabAssessment'
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '201':
-          description: successful operation patient labAssessment created
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    get:
-      tags:
-        - LabAssessment
-      summary: get patient labAssessment data
-      description: This can only be done by the logged in user.
-      operationId: getPatientLabAssessment
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: patientId
-          type: integer
-          description: patient id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: ok
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /labAssessment/{labAssessmentId}:
-    put:
-      tags:
-        - LabAssessment
-      summary: update patient labAssessment
-      description: This can only be done by the logged in user.
-      operationId: updatePatientLabAssessment
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: labAssessmentData
-          description: patient labAssessment data object
-          required: true
-          schema:
-            $ref: '#/definitions/LabAssessment'
-        - in: path
-          name: labAssessmentId
-          type: integer
-          description: patient labAssessment resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '202':
-          description: successful operation patient updated
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    delete:
-      tags:
-        - LabAssessment
-      summary: delete patient labAssessment data
-      description: This can only be done by the logged in user.
-      operationId: deletePatientLabAssessment
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: labAssessmentId
-          type: integer
-          description: patient labAssessment resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: patient labAssessment deleted successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /imaging:
-    post:
-      tags:
-        - Imaging
-      summary: Create new patient
-      description: This can only be done by the logged in user.
-      operationId: createPatientImaging
-      consumes:
-        - multipart/form-data
-      produces:
-        - application/json
-      parameters:
-        - in: formData
-          name: imagingDate
-          description: Date Of Imaging
-          required: true
-          type: string
-          format: date-time
-          default: '2017-07-16 10:54:56'
-        - in: formData
-          name: imagingTypeId
-          description: Type Of Imaging
-          required: true
-          type: integer
-        - in: formData
-          name: patientId
-          description: Patient Id
-          required: true
-          type: integer
-        - in: formData
-          name: userId
-          description: User Id
-          required: true
-          type: integer
-        - in: formData
-          name: reading
-          description: Reading
-          required: true
-          type: string
-        - in: formData
-          name: 'images[]'
-          description: Images to upload
-          required: true
-          type: file
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '201':
-          description: successful operation patient imaging created
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    get:
-      tags:
-        - Imaging
-      summary: get patient imaging data
-      description: This can only be done by the logged in user.
-      operationId: getPatientImaging
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: patientId
-          type: integer
-          description: patient id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: ok
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /imaging/{imagingId}:
-    put:
-      tags:
-        - Imaging
-      summary: update patient imaging
-      description: This can only be done by the logged in user.
-      operationId: updatePatientImaging
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: imagingData
-          description: patient imaging data object
-          required: true
-          schema:
-            $ref: '#/definitions/Imaging'
-        - in: path
-          name: imagingId
-          type: integer
-          description: patient imaging resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '202':
-          description: successful operation patient updated
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    delete:
-      tags:
-        - Imaging
-      summary: delete patient imaging data
-      description: This can only be done by the logged in user.
-      operationId: deletePatientImaging
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: imagingId
-          type: integer
-          description: patient imaging resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: patient imaging deleted successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /intervention:
-    post:
-      tags:
-        - Intervention
-      summary: Create new patient
-      description: This can only be done by the logged in user.
-      operationId: createPatientIntervention
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: intervention
-          description: Created patient object
-          required: true
-          schema:
-            $ref: '#/definitions/Intervention'
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '201':
-          description: successful operation patient intervention created
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    get:
-      tags:
-        - Intervention
-      summary: get patient intervention data
-      description: This can only be done by the logged in user.
-      operationId: getPatientIntervention
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: patientId
-          type: integer
-          description: patient id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: ok
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-  /intervention/{interventionId}:
-    put:
-      tags:
-        - Intervention
-      summary: update patient intervention
-      description: This can only be done by the logged in user.
-      operationId: updatePatientIntervention
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: interventionData
-          description: patient intervention data object
-          required: true
-          schema:
-            $ref: '#/definitions/Intervention'
-        - in: path
-          name: interventionId
-          type: integer
-          description: patient intervention resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '202':
-          description: successful operation patient updated
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '422':
-          description: The given data failed to pass validation.
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '500':
-          description: internal server error
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-        '501':
-          description: not implented
-          schema:
-            $ref: '#/definitions/ExceptionResponse'
-    delete:
-      tags:
-        - Intervention
-      summary: delete patient intervention data
-      description: This can only be done by the logged in user.
-      operationId: deletePatientIntervention
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: interventionId
-          type: integer
-          description: patient intervention resource id
-          required: true
-      security:
-        - iHRegistry_auth: []
-      responses:
-        '200':
-          description: patient intervention deleted successfully
-          schema:
-            $ref: '#/definitions/SuccessResponse'
-        '401':
-          description: Unauthenticated Error
           schema:
             $ref: '#/definitions/ExceptionResponse'
         '500':
@@ -1348,18 +328,15 @@ paths:
           schema:
             $ref: '#/definitions/ExceptionResponse'
 securityDefinitions:
-  iHRegistry_auth:
+  VirtualExposition_auth:
     type: oauth2
-    authorizationUrl: 'http://ihreg.localhost//oauth/authorize'
-    # authorizationUrl: 'http://api.ihregistery.eye-ltd.com/oauth/authorize'
-    tokenUrl: 'http://ihreg.localhost/oauth/token'
-    # tokenUrl: 'http://api.ihregistery.eye-ltd.com/oauth/token'
-    description: "client_id: 4 </br> tokenURL: h46pAm7pvbRqtsLgpejObV8psd53AYMQwzbTG8HU
-      </br> email: cl_user01@eye-ltd.com </br> password: cl_user01"
+    authorizationUrl: 'http://virtual-exposition-app.localhost/oauth/authorize'
+    tokenUrl: 'http://virtual-exposition-app.localhost/oauth/token'
+    description: "client_id: 7 </br> client_secret: ivpA8ICLAjhtNcst5mdRvAMiiJLOYRitbA3BQMiY "
     flow: accessCode
-    scopes:
-      'write:pets': modify pets in your account
-      'read:pets': read your pets
+    scopes: 
+      'write:events': modify events in your account
+      'read:events': read your events
 definitions:
   ExceptionResponse:
     type: object
@@ -1386,6 +363,24 @@ definitions:
         type: object
       objectType:
         type: string
+  LoginData:
+    type: object
+    properties:
+      grantType:
+        type: string
+        default: "password"
+      clientId:
+        type: string
+        default: "6"
+      clientSecret:
+        type: string
+        default: "6QS7jQWrxEIA9B2SwC79ZHIKieyzgX5ZiyNaP0x1"
+      username: 
+        type: string
+        default: "cl_user01@eye-ltd.com"
+      password: 
+        type: string
+        default: "cl_user01"
   User:
     type: object
     properties:
@@ -1403,193 +398,64 @@ definitions:
         type: string
       hospitalId:
         type: integer
-  Patient:
+      access_token:
+        type: string
+      expires_in:
+        type: string
+      refresh_token:
+        type: string
+      token_type:
+        type: string
+  Event:
     type: object
     properties:
       id:
         type: integer
-      patientUniqueCode:
-        type: string
       name:
         type: string
-      fileNo:
-        type: integer
-      birthDate:
+      location:
+        type: string
+      lat:
+        type: number
+        format: double
+      lon:
+        type: number
+        format: double
+      img:
+        type: string
+      startAt:
         type: string
         format: date
         default: '2017-05-02'
-      birthPlace:
+      endAt:
         type: string
-      nationality:
-        type: string
-      parentalConsanguinity:
-        type: integer
-        default: 1
-      ageAtDiagnosisNumber:
-        type: integer
-        default: 1
-      ageAtDiagnosisType:
-        type: integer
-        default: 1
-      ageAtOnsetOfBleedingNumber:
-        type: integer
-        default: 1
-      ageAtOnsetOfBleedingType:
-        type: integer
-        default: 1
-      profession:
-        type: string
-      contactPhoneNumber:
-        type: string
-      bloodGroup:
-        type: integer
-        default: 1
-      gender:
-        type: integer
-      maritalStatus:
-        type: integer
-      addressLine:
-        type: string
-      city:
-        type: string
-      state:
-        type: string
-      alley:
-        type: string
-      homeNumber:
-        type: string
-      educationalLevel:
-        type: integer
-      schoolAttendance:
-        type: integer
-      schoolPerformance:
-        type: integer
-      employmentStatus:
-        type: integer
-      diagnosis:
-        type: integer
-      diagnosisTechnique:
-        type: integer
-      BSLeftKnee:
-        type: boolean
-      BSRightKnee:
-        type: boolean
-      BSLeftAnkle:
-        type: boolean
-      BSRightAnkle:
-        type: boolean
-      BSLeftElbow:
-        type: boolean
-      BSRightElbow:
-        type: boolean
-      BSLeftShoulder:
-        type: boolean
-      BSRightShoulder:
-        type: boolean
-      BSLeftHip:
-        type: boolean
-      BSRightHip:
-        type: boolean
-      BSLeftWrist:
-        type: boolean
-      BSRightWrist:
-        type: boolean
-      BSIntracranial:
-        type: boolean
-      BSSpinalCord:
-        type: boolean
-      BSThroat:
-        type: boolean
-      BSGut:
-        type: boolean
-      BSMuscles:
-        type: boolean
-      BSOthers:
-        type: boolean
-      bleedingSeverity:
-        type: integer
-      fatherName:
-        type: string
-      fatherEducationLevel:
-        type: integer
-      fatherProfession:
-        type: string
-      fatherContactNumber:
-        type: string
-      motherName:
-        type: string
-      motherEducationLevel:
-        type: integer
-      motherProfession:
-        type: string
-      motherContactNumber:
+        format: date
+        default: '2017-05-02'
+      description:
         type: string
       userId:
         type: integer
-      hospitalId:
-        type: integer
-  History:
+  EventStand:
     type: object
     properties:
       id:
         type: integer
-      toothOrGumBleeding:
+      eventId:
         type: integer
-      hematuria:
-        type: integer
-      gIbleeding:
-        type: integer
-      menorrhagia:
-        type: integer
-      bleedingAfterOperations:
-        type: integer
-      bleedingAfterTrauma:
-        type: integer
-      bleedingAtbirth:
-        type: integer
-      bleedingAfterVaccination:
-        type: integer
-      jointBleeding:
-        type: integer
-      skinBleeding:
-        type: integer
-      muscleBleeding:
-        type: integer
-      epistaxis:
-        type: integer
-      familyHistoryOfBleedingDisorder:
-        type: integer
-      motherCousin:
-        type: integer
-      motherGrandfather:
-        type: integer
-      motherGrandMother:
-        type: integer
-      motherUncle:
-        type: integer
-      motherAunt:
-        type: integer
-      fatherCousin:
-        type: integer
-      fatherGrandfather:
-        type: integer
-      fatherGrandMother:
-        type: integer
-      fatherUncle:
-        type: integer
-      fatherAunt:
-        type: integer
-      otherFamilyMembers:
-        type: integer
-      maternalHistoryOfAbortion:
-        type: integer
-      familyHistoryOfDeathDueToBleeding:
-        type: integer
-      patientId:
-        type: integer
+      status:
+        type: boolean
+      price:
+        type: number
+        format: double
+      sqMeters:
+        type: string
+      description:
+        type: string
+      logoPos:
+        type: string
       userId:
         type: integer
-  Hospital:
+  Company:
     type: object
     properties:
       id:
@@ -1598,185 +464,24 @@ definitions:
         type: string
       phone:
         type: string
-  Imaging:
+      logoImg:
+        type: string
+      marketingDocs:
+        type: string
+      adminName:
+        type: string
+      adminEmail:
+        type: string
+      userId:
+        type: integer
+  UserStandReservation:
     type: object
     properties:
       id:
         type: integer
-      imagingDate:
-        type: string
-        format: date-time
-      imagingTypeId:
+      eventStandId:
         type: integer
-      reading:
-        type: string
-      imagePaths:
-        type: string
-      patientId:
+      companyId:
         type: integer
       userId:
         type: integer
-  ImagingType:
-    type: object
-    properties:
-      id:
-        type: integer
-      type:
-        type: string
-  LabAssessment:
-    type: object
-    properties:
-      id:
-        type: integer
-      whiteBloodCell:
-        type: string
-      redBloodCell:
-        type: string
-      plateletCount:
-        type: string
-      bleedingTime:
-        type: string
-        format: date-time
-      prothrombinTime:
-        type: string
-        format: date-time
-      partialThromboplastinTime:
-        type: string
-        format: date-time
-      ThrombinTime:
-        type: string
-        format: date-time
-      fibrinogen:
-        type: string
-      fibrinogenDegradationProducts:
-        type: string
-      vonWillebrandAssay:
-        type: string
-      mixingStudy:
-        type: integer
-      hbsAg:
-        type: integer
-      antiHCV:
-        type: integer
-      antiHIV:
-        type: integer
-      antiHAV:
-        type: integer
-      treatmentId:
-        type: integer
-      patientId:
-        type: integer
-      userId:
-        type: integer
-  Transfusion:
-    type: object
-    properties:
-      id:
-        type: integer
-      transfusionDate:
-        type: string
-        format: date-time
-      transfusionType:
-        type: integer
-      patientId:
-        type: integer
-      userId:
-        type: integer
-      created_at:
-        type: string
-        format: date-time
-      updated_at:
-        type: string
-        format: date-time
-      deleted_at:
-        type: string
-        format: date-time
-  Treatment:
-    type: object
-    properties:
-      id:
-        type: integer
-      treatmentRegimen:
-        type: integer
-      typeOfTreatment:
-        type: integer
-      drugName:
-        type: string
-      productLotNumber:
-        type: integer
-      plateletCount:
-        type: string
-      startDate:
-        type: string
-        format: date-time
-      stopDate:
-        type: string
-        format: date-time
-      doseUnitkg:
-        type: string
-      doseFrequencyDay:
-        type: integer
-      doseFrequencyWeek:
-        type: integer
-      reasonForTreatment:
-        type: string
-      lotNumber:
-        type: string
-      patientId:
-        type: integer
-      userId:
-        type: integer
-  Visit:
-    type: object
-    properties:
-      id:
-        type: integer
-      visitDate:
-        type: string
-        format: date-time
-      weight:
-        type: integer
-      height:
-        type: integer
-      bloodPressure:
-        type: integer
-      heartRate:
-        type: integer
-      temperature:
-        type: integer
-      surgicalOperationProcedures:
-        type: integer
-      dentalProcedures:
-        type: integer
-      physiotherapyProcedures:
-        type: integer
-      orthopedicProcedures:
-        type: integer
-      labAssessmentsProcedures:
-        type: integer
-      imagingProcedures:
-        type: integer
-      patientId:
-        type: integer
-      userId:
-        type: integer
-  Intervention:
-    type: object
-    properties:
-        id:
-          type: integer
-        interventionDate:
-          type: string
-          format: date-time
-        interventionType: 
-          type: integer
-        discription: 
-          type: string
-        reason:
-          type: string
-        comment:
-          type: string
-        patientId: 
-          type: integer
-        userId: 
-          type: integer
